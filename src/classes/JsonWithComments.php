@@ -8,25 +8,29 @@
  */
 
 class JsonWithComments {
-	static function decode($jsonString, $asArray = true, $trim = true) {
+	static function decode($jsonString, $asArray = true, $trim = true, $removeTrailingCommas = true) {
 		if($trim) {
 			$jsonString = trim($jsonString);
 		}
 
         $lines = explode(PHP_EOL, $jsonString);
 
-        // Get all content lines, skipping comments
+        // Get all content lines, removing comments
         $contentLines = [];
+        $comments = [];
         foreach($lines as $line) {
-            $line = trim($line);
-            if(strpos($line, "//") === 0) {
-                continue;
-            }
+            if(preg_match("#(.?)\/\/(.+)#", $line, $matches)) {
+            	$comments[] = $matches[2];
+            	$line = $matches[1];
+			}
             $contentLines[] = $line;
         }
-
+        
         $contentJson = implode(PHP_EOL, $contentLines);
 
+		if($removeTrailingCommas) {
+    	    $contentJson = preg_replace("#,\s+\}#", "}", $contentJson);
+		}
         $decoded = json_decode($contentJson, $asArray);
 
         if($decoded === null) {
