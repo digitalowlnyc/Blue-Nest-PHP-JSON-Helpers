@@ -1,0 +1,20 @@
+{
+  "name": "bluenest/blue-nest-json-helpers",
+  "description": "Blue nest json helper library.",
+  "version": "0.100",
+  "authors": [
+    {
+      "name": "Bryan",
+      "email": "composerpackages@bnest.co"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "files": [
+      "src/functions/composer-include-functions.php"
+    ],
+    "classmap": [
+      "src/classes/"
+    ]
+  }
+}
